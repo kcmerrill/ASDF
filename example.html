@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>
+            asdf example
+        </title>
+        <script src="dist/asdf.js"></script>
+        <script src="http://fb.me/react-with-addons-0.12.2.js"></script>
+        <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+        <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    </head>
+    <body>
+        <script language="javascript">
+            var UserStore = asdf.store({
+                _users: [],
+                getUsers: function(){
+                    return this._users;
+                }
+            }, function(request){
+                if(request.action == 'add_user'){
+                    UserStore._users.push(request.payload);
+                    UserStore.changed();
+                }
+            });
+        </script>
+
+        <script type="text/jsx">
+            var UserList = React.createClass({
+            mixins: [UserStore],
+            getInitialState: function(){
+                return {
+                    users: this.getUsers(),
+                    new_user: ''
+                }
+            },
+            componentDidMount: function() {
+                UserStore.addChangeListener(this._onChange);
+            },
+            componentWillUnmount: function() {
+                UserStore.removeChangeListener(this._onChange);
+            },
+            new_user_entering: function(event){
+                this.setState({
+                    users: this.getUsers(),
+                    new_user: event.target.value
+                });
+            },
+            add_new_user: function(){
+                asdf.action('add_user', this.state.new_user);
+            },
+            render: function (){
+                var users = this.state.users.map(function(user){
+                    return (<div key={user}>{user}</div>);
+                });
+                return (
+                    <div>
+                    <h1>Users</h1>
+                    {users}
+                    <input type="text" value={this.state.new_user} onChange={this.new_user_entering}/><button onClick={this.add_new_user}>Add User</button>
+                    </div>
+                );
+            },
+            _onChange: function(){
+                var self = this;
+                this.setState({
+                    users: this.getUsers(),
+                    new_user: ''
+                });
+            }
+        });
+    React.render( <UserList />, document.body);
+    </script>
+    </body>
+</html>
