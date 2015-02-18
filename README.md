@@ -40,21 +40,30 @@ Here, in the defaults is where you would set all of your getters. You'd also set
 
 The stores have a few properties on them, and they are as follows:
 
-```changed()```
+```
+changed()
+```
 
 Anytime you update your store, simply call .changed() to emit the 'change' event
 
-```addChangeListener(callback)```
+```
+addChangeListener(callback)
+```
 
 Anytime a change is made to the store, this callback will be run
 
-```removeChangeListener(callback)```
+```
+removeChangeListener(callback)
+```
 
 Remove the specified callback from the change listener
 
-```dispatchToken ```
+```
+dispatchToken
+```
 
 A simple id that is primarily used in the waitFor() functionality. Again, see the flux documentation for more information regarding waitFor()
+
 
 ###Site note
 This project can be run via browserify, or if you're interested in just using it right out of the box, simply take the src/asdf-standalone.js file and use it by itself(see example.html). If you feel comfortable going the browserify rotue, simply require it via the src directory. 
